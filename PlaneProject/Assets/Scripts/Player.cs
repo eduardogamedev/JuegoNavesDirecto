@@ -17,6 +17,8 @@ public class Player : Character
     private float speedDash = 10;
     [SerializeField]
     private Slider lifeBar;
+    [SerializeField]
+    private CameraFollow cameraFollow;
 
     private ActionPlayer actionPlayer;
 
@@ -57,7 +59,7 @@ public class Player : Character
 
     private void OnCollisionEnter(Collision collision)
     {
-        Camera.main.GetComponent<CameraFollow>().ShakeCamera();
+        cameraFollow.ShakeCamera();
         UpdateLife(life - 10);
         Vector3 normalContact = collision.contacts[0].normal;
         transform.Rotate(Vector3.up*normalContact.y*180);

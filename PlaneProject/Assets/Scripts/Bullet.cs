@@ -11,14 +11,19 @@ public class Bullet : MonoBehaviour
     [SerializeField]
     private string tagCollision;
 
-    public virtual void OnCollisionEnter(Collision collision)
+    public virtual void OnTriggerEnter(Collider collision)
     {
-        if (collision.gameObject.CompareTag(tagCollision) && collision.gameObject.GetComponent<Character>() != null)
-        {
-            Character character = collision.gameObject.GetComponent<Character>();
-            character.UpdateLife(character.life - damage);
+        if(collision.gameObject.GetComponentInParent<Character>() != null){
+            Character character = collision.gameObject.GetComponentInParent<Character>();
+            if (character.CompareTag(tagCollision))
+            {
+                character.UpdateLife(character.life - damage);
+            }
         }
-        Utils.InstantiateParticle(particle, collision.contacts[0].normal,collision.contacts[0].point,collision.gameObject.transform);
+        
+        //Utils.InstantiateParticle(particle, collision.contacts[0].normal,collision.contacts[0].point,collision.gameObject.transform);
+        Utils.InstantiateParticle(particle, transform.position.normalized,
+            collision.transform.position,collision.gameObject.transform);
         Destroy(this.gameObject);
     }
 }
